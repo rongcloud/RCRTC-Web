@@ -574,18 +574,28 @@ export default {
       if (this.$data.isAnchor) {
         this.$data.qiutConfirm = true;
       } else {
-        const BackList = [
-          {
-            value: "收起房间",
-            // eslint-disable-next-line no-undef
-            img: "url(" + require("../../assets/roomicon/LeaveRoom.png") + ")",
-          },
-          {
-            value: "离开房间",
-            // eslint-disable-next-line no-undef
-            img: "url(" + require("../../assets/roomicon/CloseRoom.png") + ")",
-          },
-        ];
+        let BackList  =[];
+        if(this.$store.state.onMic){//在麦位上时不允许收起房间
+          BackList = [
+            {
+              value: "离开房间",
+              // eslint-disable-next-line no-undef
+              img: "url(" + require("../../assets/roomicon/CloseRoom.png") + ")",
+            }]
+        }else{
+          BackList = [
+            {
+              value: "收起房间",
+              // eslint-disable-next-line no-undef
+              img: "url(" + require("../../assets/roomicon/LeaveRoom.png") + ")",
+            },
+            {
+              value: "离开房间",
+              // eslint-disable-next-line no-undef
+              img: "url(" + require("../../assets/roomicon/CloseRoom.png") + ")",
+            },
+          ];
+        }
         console.log(this.$refs.RoomBack.RoomBackOpen);
         this.$refs.RoomBack.RoomBackOpen(BackList);
       }

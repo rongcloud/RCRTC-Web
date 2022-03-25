@@ -1321,6 +1321,7 @@ export default {
   color: #2c3e50;
   height: 100%;
   width: 56.25vh;
+  max-width: 375px;
   overflow: hidden;
   margin: auto;
   background: #fff;

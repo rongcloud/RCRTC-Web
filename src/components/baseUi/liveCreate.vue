@@ -122,7 +122,7 @@ export default {
   position: relative;
   font-size: 0px;
   border-radius: 0px 0px 20px 20px;
-  width: 375px;
+  width: 100%;
   height: 172px;
   background: rgba(3, 6, 47, 0.2);
   color: #fff;
@@ -201,6 +201,6 @@ export default {
   text-align: center;
   color: #fff;
   border-radius: 100px;
-  margin-left: calc(28.125vh - 145.5px);
+  margin-left: calc(187.5px - 145.5px);
 }
 </style>
