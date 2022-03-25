@@ -31,7 +31,7 @@
       v-if="
         !onInput &&
         this.$store.state.creatUser &&
-        (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
+        (this.$store.state.roomType == 'live'
           ? !this.$store.state.onLink
           : true)
       "
@@ -89,9 +89,7 @@
       v-if="
         !onInput &&
         !this.$store.state.creatUser &&
-        (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
-          ? !this.$store.state.onMic
-          : true)
+        (this.$store.state.roomType == 'live' ? !this.$store.state.onMic : true)
       "
       @click="ApplyWeat"
     >
@@ -112,9 +110,7 @@
       v-if="
         !onInput &&
         this.$store.state.onLink &&
-        (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
-          ? true
-          : false)
+        (this.$store.state.roomType == 'live' ? true : false)
       "
       @click="quitSeat"
     >
@@ -199,7 +195,7 @@ export default {
     endRec: function () {
       console.log("name", this.$store.state.userInfo.userName);
       this.$data.recing = false;
-      if (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live") {
+      if (this.$store.state.roomType == "live") {
         Recorder.stop({
           userId: this.$RCLiveRoomLib.im.userId,
           userName: this.$store.state.userInfo.userName,

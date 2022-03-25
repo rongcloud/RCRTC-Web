@@ -127,6 +127,7 @@ export default {
         this.$router.push("/login");
         return;
       }
+      this.$store.dispatch("getRoomType", "voice");
       this.$RCVoiceRoomLib.connect(this.$store.state.userInfo.imToken);
       this.$router.push("/room");
     },
@@ -139,6 +140,7 @@ export default {
         return;
       }
       this.$RCLiveRoomLib.connect(this.$store.state.userInfo.imToken);
+      this.$store.dispatch("getRoomType", "live");
       this.$router.push("/room?roomType=liveRoom");
     },
     clickVoiceRadio: function () {

@@ -66,10 +66,7 @@ export default {
           break;
         case "离开房间":
           console.log("离开房间");
-          if (
-            this.$RCLiveRoomLib.im &&
-            this.$RCLiveRoomLib.im.roomType == "live"
-          ) {
+          if (this.$store.state.roomType == "live") {
             try {
               this.$RCLiveRoomLib.im.messageUpdate("RC:VRLRefreshMsg", {
                 name: "RCAudienceLeaveRoom",
@@ -128,8 +125,7 @@ export default {
               isPrivate: 0,
               password: "",
               roomId:
-                this.$RCLiveRoomLib.im &&
-                this.$RCLiveRoomLib.im.roomType == "live"
+                this.$store.state.roomType == "live"
                   ? this.$RCLiveRoomLib._roomidcli
                   : this.$RCVoiceRoomLib._roomidcli,
             })
@@ -158,10 +154,7 @@ export default {
           break;
         case "房间公告":
           this.$emit("closeRoomFit");
-          if (
-            this.$RCLiveRoomLib.im &&
-            this.$RCLiveRoomLib.im.roomType == "live"
-          ) {
+          if (this.$store.state.roomType == "live") {
             this.$refs.Notice.setPopup({
               isShow: true,
               value: this.$RCLiveRoomLib.im._roomNotice
@@ -183,10 +176,7 @@ export default {
           break;
         case "自由上麦":
           this.$emit("closeRoomFit");
-          if (
-            this.$RCLiveRoomLib.im &&
-            this.$RCLiveRoomLib.im.roomType == "live"
-          ) {
+          if (this.$store.state.roomType == "live") {
             await this.$RCLiveRoomLib.setRoomInfo({
               ...this.$RCLiveRoomLib.roomInfo,
               isFreeEnterSeat: true,
@@ -213,10 +203,7 @@ export default {
           break;
         case "申请上麦":
           this.$emit("closeRoomFit");
-          if (
-            this.$RCLiveRoomLib.im &&
-            this.$RCLiveRoomLib.im.roomType == "live"
-          ) {
+          if (this.$store.state.roomType == "live") {
             await this.$RCLiveRoomLib.setRoomInfo({
               ...this.$RCLiveRoomLib.roomInfo,
               isFreeEnterSeat: false,
@@ -536,7 +523,7 @@ export default {
           isPrivate: 1,
           password: value,
           roomId:
-            this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live"
+            this.$store.state.roomType == "live"
               ? this.$RCLiveRoomLib._roomidcli
               : this.$RCVoiceRoomLib._roomidcli,
         })
@@ -570,17 +557,14 @@ export default {
         .setRoomTitle({
           name: value,
           roomId:
-            this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live"
+            this.$store.state.roomType == "live"
               ? this.$RCLiveRoomLib._roomidcli
               : this.$RCVoiceRoomLib._roomidcli,
         })
         .then((res) => {
           console.log(res);
           if (res.data.code == 10000) {
-            if (
-              this.$RCLiveRoomLib.im &&
-              this.$RCLiveRoomLib.im.roomType == "live"
-            ) {
+            if (this.$store.state.roomType == "live") {
               this.$RCLiveRoomLib.setRoomInfo({
                 ...this.$RCLiveRoomLib.roomInfo,
                 roomName: value,
@@ -600,7 +584,7 @@ export default {
         });
     },
     GetNotice: function (value) {
-      if (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live") {
+      if (this.$store.state.roomType == "live") {
         this.$RCLiveRoomLib.setRoomInfo({
           ...this.$RCLiveRoomLib.roomInfo,
           extra: value,

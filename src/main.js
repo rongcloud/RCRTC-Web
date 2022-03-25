@@ -7,7 +7,8 @@ import store from './store/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import md5 from 'js-md5';
-import RCVoiceRoomLib from "@rongcloud/rcvoiceroomlib-v1";
+// import RCVoiceRoomLib from "@rongcloud/rcvoiceroomlib-v1";
+import RCVoiceRoomLib from "../../rcvoiceroomlib-web/dist/main";
 import RCLiveRoomLib from "@rongcloud/rcliveroomlib";
 
 import * as RongIMLib from "@rongcloud/imlib-next";

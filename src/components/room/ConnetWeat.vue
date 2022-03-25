@@ -68,7 +68,7 @@ export default {
   mounted() {},
   methods: {
     openConnetWheat: async function (item) {
-      if (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live") {
+      if (this.$store.state.roomType == "live") {
         if (item) {
           this.activeName = "invitation";
         }

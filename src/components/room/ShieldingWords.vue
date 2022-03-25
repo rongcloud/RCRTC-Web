@@ -27,8 +27,7 @@
         >
         <el-tag
           :key="tag.id"
-          v-for="tag in this.$RCLiveRoomLib.im &&
-          this.$RCLiveRoomLib.im.roomType == 'live'
+          v-for="tag in this.$store.state.roomType == 'live'
             ? this.dynamicTags
             : this.$store.state.sensitiveList"
           closable
@@ -75,7 +74,7 @@ export default {
     openShieldingWords: function () {
       this.ShieldingWords = true;
       this.dynamicTags = [];
-      if (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live") {
+      if (this.$store.state.roomType == "live") {
         let arr = [];
         if (this.$RCLiveRoomLib.im._roomShields) {
           for (var i = 0; i < this.$RCLiveRoomLib.im._roomShields.length; i++) {
@@ -112,7 +111,7 @@ export default {
     },
 
     handleClose(tag) {
-      if (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live") {
+      if (this.$store.state.roomType == "live") {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
         this.num = this.dynamicTags.length;
         let arr = [];
@@ -167,7 +166,7 @@ export default {
 
     handleInputConfirm() {
       let inputValue = this.inputValue;
-      if (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == "live") {
+      if (this.$store.state.roomType == "live") {
         console.log("inputValue", inputValue);
         if (inputValue && this.num < 10) {
           this.dynamicTags.push({

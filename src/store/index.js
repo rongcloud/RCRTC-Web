@@ -45,6 +45,7 @@ const store = new Vuex.Store({
         isFreeEnterSeat: false, //上麦模式默认需要申请
         onLink: false, //连线中
         owerDisconnet: false,//是否为主动断开连接判断
+        roomType: "",
 
         //控制更新
         seatInfoList: 2,
@@ -165,6 +166,10 @@ const store = new Vuex.Store({
         setOwerDisconnet(state, newVal) {
             state.owerDisconnet = newVal.value
         },
+        //修改房间标识
+        setRoomType(state, newVal) {
+            state.roomType = newVal.value
+        },
     },
     actions: {//需要执行多个 mutations 就需要用 action 了
         //更新主播座位信息
@@ -270,19 +275,26 @@ const store = new Vuex.Store({
         getSpeakingChenge({ commit }, newVal) {
             commit('setSpeakingChenge', { value: newVal })
         },
+
         //房间座位发生改变
         getsetCountsChange({ commit }, newVal) {
             commit('setsetCountsChange', { value: newVal })
         },
+
         //获取屏蔽词
         getsensitiveList({ commit }, newVal) {
             commit('setsensitiveList', { value: newVal })
         },
+
         //主动断开连接
         getOwerDisconnet({ commit }, newVal) {
             commit('setOwerDisconnet', { value: newVal })
         },
-    }
 
+        //主动断开连接
+        getRoomType({ commit }, newVal) {
+            commit('setRoomType', { value: newVal })
+        },
+    }
 })
 export default store
