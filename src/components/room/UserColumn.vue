@@ -103,6 +103,7 @@ export default {
               this.$RCLiveRoomLib.im.roomType == "live"
             ) {
               await this.$RCLiveRoomLib.pickUserToSeat(item.userId);
+              this.$store.state.picking = item.userId;
             } else {
               await this.$RCVoiceRoomLib.pickUserToSeat(item.userId);
             }

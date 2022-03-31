@@ -8,8 +8,9 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import md5 from 'js-md5';
 import RCVoiceRoomLib from "@rongcloud/rcvoiceroomlib-v1";
-//import RCLiveRoomLib from "@rongcloud/rcliveroomlib";
-import RCLiveRoomLib from "../../../RCVoiceRoomLib-Web/dist/main"
+import RCLiveRoomLib from "@rongcloud/rcliveroomlib";
+
+//import RCLiveRoomLib from "../../../RCVoiceRoomLib-Web/dist/main"
 
 import * as RongIMLib from "@rongcloud/imlib-next";
 import * as RongRTCLib from "@rongcloud/plugin-rtc";

@@ -40,7 +40,7 @@ export default {
     // window.rc = this.$RCVoiceRoomLib;online
     this.$RCVoiceRoomLib.init({ AppKey: config.appKey.dev });
     this.$RCLiveRoomLib.init(config.appKey.dev);
-    // window.rc = this.$RCLiveRoomLib;
+    window.rc = this.$RCLiveRoomLib;
 
     console.log("getua", navigator.userAgent);
     //Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36
@@ -672,6 +672,7 @@ export default {
             cancelButtonText: "拒绝",
             customClass: "customClass-Control",
             // center: true,
+            closeOnPressEscape:true,
             showClose: false,
             dangerouslyUseHTMLString: true,
             // type: "warning",
@@ -681,8 +682,7 @@ export default {
               this.$RCLiveRoomLib.acceptInvitation();
               this.$store.state.onMic = true;
               this.$store.state.onLink = true;
-              console.log(123123);
-              console.log("123123", o.seatIndex);
+            
               await this.$RCLiveRoomLib.enterSeat(o.seatIndex);
               this.$RCLiveRoomLib.im.messageUpdate("RC:VRLRefreshMsg", {
                 name: "VoiceRoomRejectManagePick",
@@ -701,8 +701,6 @@ export default {
             })
             .catch(() => {
               if (this.$RCLiveRoomLib.rtc.roomType == "live") {
-                console.log("终端");
-                console.log("发送房id", o.id);
                 this.$RCLiveRoomLib.rejectInvitation(o.id);
                 this.$data.cooldown = 0;
               } else {
@@ -728,6 +726,9 @@ export default {
       this.$store.dispatch("showToast", {
         value: "上麦邀请被取消",
       });
+       document
+              .getElementsByClassName("el-message-box__wrapper")[0]
+              .click();
     });
     this.$RCLiveRoomLib.on("userEnter", (userId) => {
       setTimeout(() => {
@@ -746,11 +747,24 @@ export default {
     this.$RCLiveRoomLib.on("invitationRejected", (userId) => {
       for (var i = 0; i < this.$store.state.roomUserList.length; i++) {
         if (this.$store.state.roomUserList[i].userId == userId) {
-          this.$store.dispatch("showToast", {
-            value: this.$store.state.roomUserList[i].userName + "拒绝上麦",
-          });
+
+          if(this.$store.state.picking == ''){//状态已经空了 主动取消
+             this.$store.dispatch("showToast", {
+              value: "取消邀请" + this.$store.state.roomUserList[i].userName ,
+            });
+          }else{
+            this.$store.dispatch("showToast", {
+              value: this.$store.state.roomUserList[i].userName + "拒绝上麦",
+            });
+            this.$store.state.picking = ''
+          }
         }
       }
+    });
+    this.$RCLiveRoomLib.on("onInvitationCancel", () => {
+          this.$store.dispatch("showToast", {
+            value:  "视频邀请取消"
+          });
     });
 
     //默认的kv更新
@@ -785,32 +799,32 @@ export default {
     //各种公屏消息
     this.$RCLiveRoomLib.on("onMessageReceived", async (m) => {
       // let m = message.messages[0];
-      // console.log("MessageReceived", m);
+       console.log("MessageReceived", m);
       //适配阻止多端登陆消息监听
+      console.log("收到消息",m);
       if (m.messageType == "RCMic:loginDeviceMsg") {
-        if (m.content.platform != "web") {
-          this.$store.dispatch("showToast", {
-            value: "移动端登陆",
+         this.$store.dispatch("showToast", {
+            value: "账号在其他地方登录",
             time: 2000,
           });
-
-          if (this.$route.name == "roomHouse") {
+           if (this.$route.name == "liveRoom") {
             await this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli);
           }
 
-          if (this.$route.name != "home") {
-            this.$router.replace("/home");
+          if (this.$route.name != "login") {
+            this.$router.replace("/login");
           }
-
-          setTimeout(
-            () => {
-              this.$router.go(0);
-            },
-
-            2000
-          );
-        }
       }
+       this.$RCLiveRoomLib.im.body.addEventListener("DISCONNECT", () => {
+           this.$store.dispatch("showToast", {
+            value: "账号在其他地方登录",
+            time: 2000,
+          });
+           if (this.$route.name != "login") {
+            this.$router.replace("/login");
+          }
+        })
+
 
       //适配数美审核消息监听变更
       if (m.messageType == "RCMic:shumeiAuditFreezeMsg") {
@@ -896,7 +910,7 @@ export default {
         : targetuser.admin
         ? imgAdmin
         : "";
-      console.log(userImg);
+      console.log("收到消息");
       console.log(m);
       if ("conversationType" in m && m.conversationType == 1) {
         return;
@@ -1013,6 +1027,7 @@ export default {
             m.content.giftName +
             " X" +
             m.content.number;
+          
           this.$store.state.Chatroom.push(giftAllMsg);
           this.$store.state.Chatroom.gift();
           this.$store.dispatch("giftUpdate");
@@ -1071,7 +1086,10 @@ export default {
           roomId: this.$RCLiveRoomLib._roomidcli,
         })
         .then((res) => {
-          this.$store.dispatch("getRoomUserList", res.data.data);
+          console.log("拿到的列表：",res);
+          if(res.data.code == 10000){
+              this.$store.dispatch("getRoomUserList", res.data.data);
+          }
         });
     });
 

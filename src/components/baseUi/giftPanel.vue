@@ -195,7 +195,8 @@ export default {
           this.$RCLiveRoomLib.im &&
           this.$RCLiveRoomLib.im.roomType == "live"
         ) {
-          this.$RCLiveRoomLib.emit("MessageReceived", {
+          console.log("发本地");
+          this.$RCLiveRoomLib.emit("onMessageReceived", {
             //发本地
             //模拟本地消息发送
             messageType: "RC:Chatroom:GiftAll",
@@ -216,10 +217,10 @@ export default {
             giftName: giftData[numIndex].name,
             number: this.$data.currentNum,
             price: giftData[numIndex].price,
-          };
+          }
           this.$RCLiveRoomLib.im.messageUpdate("RC:Chatroom:GiftAll", c); //发im
         } else {
-          this.$RCVoiceRoomLib.emit("MessageReceived", {
+          this.$RCVoiceRoomLib.emit("onMessageReceived", {
             //发本地
             //模拟本地消息发送
             messageType: "RC:Chatroom:GiftAll",

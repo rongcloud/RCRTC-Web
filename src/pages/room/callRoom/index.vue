@@ -1,6 +1,6 @@
 <template>
   <div class="CallRoom">
-    <div class="CallRoom-noRoom" v-if="keepShow">
+    <div class="CallRoom-noRoom" @click="getRoomList(1)" v-if="keepShow">
       <span class="CallRoom-noRoom-value">请创建房间</span>
     </div>
     <scroller

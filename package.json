@@ -10,7 +10,7 @@
   "dependencies": {
     "@rongcloud/imlib-next": "^5.1.2",
     "@rongcloud/plugin-rtc": "^5.3.1",
-    "@rongcloud/rcliveroomlib": "^1.0.2",
+    "@rongcloud/rcliveroomlib": "^1.0.10",
     "@rongcloud/rcvoiceroomlib-v1": "^2.0.1",
     "axios": "^0.21.1",
     "better-scroll": "^2.4.2",

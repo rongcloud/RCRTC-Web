@@ -33,7 +33,7 @@
         this.$store.state.creatUser &&
         (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
           ? !this.$store.state.onLink
-          : true)
+          : true) && !this.$store.state.picking
       "
       @click="ApplyWeatModel"
     >
@@ -84,6 +84,17 @@
         height="36px"
       />
     </div> -->
+     <div
+      class="btn"
+      v-if="this.$store.state.picking"
+      @click="cancelInv"
+    >
+      <img
+        :src="waitUpSeat"
+        width="36px"
+        height="36px"
+      />
+    </div>
     <div
       class="btn"
       v-if="
@@ -91,7 +102,7 @@
         !this.$store.state.creatUser &&
         (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
           ? !this.$store.state.onMic
-          : true)
+          : true) 
       "
       @click="ApplyWeat"
     >
@@ -114,7 +125,7 @@
         this.$store.state.onLink &&
         (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
           ? true
-          : false)
+          : false) 
       "
       @click="quitSeat"
     >
@@ -246,6 +257,10 @@ export default {
       if (!this.$store.state.userInseat) {
         this.$emit("ApplyWeat");
       }
+    },
+    //取消邀请
+    cancelInv: function (){
+      this.$emit("cancelInv")
     },
     //私信消息
     setMsg: function () {
