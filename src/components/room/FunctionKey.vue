@@ -248,7 +248,6 @@ export default {
             this.$store.dispatch("showToast", {
               value: "全麦锁麦失败",
             });
-
             console.log(error);
           }
 
@@ -337,10 +336,14 @@ export default {
           try {
             await this.$RCVoiceRoomLib.setRoomInfo({
               ...this.$RCVoiceRoomLib.roomInfo,
+              isFreeEnterSeat: false,
+              isLockAll: false,
+              isMuteAll: false,
               seatCount: 5,
             });
             setTimeout(() => {
               this.$store.dispatch("getSeatInfoList");
+              // console.log(this.$RCVoiceRoomLib.roomInfo);
               seatcountChange = {
                 count: 4,
               };
@@ -369,6 +372,9 @@ export default {
           try {
             await this.$RCVoiceRoomLib.setRoomInfo({
               ...this.$RCVoiceRoomLib.roomInfo,
+              isFreeEnterSeat: false,
+              isLockAll: false,
+              isMuteAll: false,
               seatCount: 9,
             });
 
