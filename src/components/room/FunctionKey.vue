@@ -104,7 +104,6 @@ export default {
 
           break;
         case "收起房间":
-          console.log("收起");
           this.$router.go(-1);
           break;
         case "返回列表":

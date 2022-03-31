@@ -478,9 +478,14 @@ export default {
       this.$RCLiveRoomLib._roomidcli &&
       this.$RCLiveRoomLib._roomidcli.length
     ) {
-      console.log("getExist");
-      this.$RCLiveRoomLib.rtc.body.videoNode = this.$refs.video;
-      this.$RCLiveRoomLib.getExist();
+      if (GetQueryString("roomType") == "liveRoom") {
+        console.log("getExist");
+        this.$RCLiveRoomLib.rtc.body.videoNode = this.$refs.video;
+        this.$RCLiveRoomLib.getExist();
+      }else{
+        this.$RCLiveRoomLib.leaveRoom();
+        this.$data.isInRoom = false;
+      }
     }
 
     window.addEventListener("load", () => {

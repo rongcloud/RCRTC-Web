@@ -46,6 +46,7 @@ const store = new Vuex.Store({
         onLink: false, //连线中
         owerDisconnet: false,//是否为主动断开连接判断
         roomType: "",
+        picking: '', //主动邀请他人状态
 
         //控制更新
         seatInfoList: 2,

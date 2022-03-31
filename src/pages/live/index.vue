@@ -73,7 +73,13 @@
       @cancel="quitMic = false"
     >
     </liveQuitSeat>
-    <CancelEvenSeat ref="CancelEvenSeat" />
+    <liveCancelInv
+      v-if="cancelInvUi"
+      @invQuit="cancelInvAction"
+      @invCancel="cancelInvUi = false"
+    >
+    </liveCancelInv>
+    <CancelEvenSeat ref="CancelEvenSeat" :roomType="'live'" />
     <UserCard />
     <bottomBar
       v-if="!showGift && status == 2"
@@ -83,6 +89,7 @@
       @ApplyWeat="ApplyWeat"
       @SetupModel="ConnectOperation"
       @quitSeat="quitSeat"
+      @cancelInv = "cancelInv"
       ref="bottomBar"
     ></bottomBar>
     <!-- <div class="input">
@@ -108,6 +115,7 @@ import giftPanel from "../../components/baseUi/giftPanel.vue";
 import videoBox from "../../components/baseUi/videoBox.vue";
 import liveAudience from "../../components/baseUi/liveAudience.vue";
 import liveQuitSeat from "../../components/baseUi/liveQuitSeat.vue";
+import liveCancelInv from "../../components/baseUi/liveCancelInv.vue";
 import CancelEvenSeat from "../../components/room/CancelEvenSeat.vue";
 
 import roomBack from "../../components/room/RoomBack.vue";
@@ -150,6 +158,7 @@ export default {
       RoomFitItemList: [],
       qiutConfirm: false, //主播退出确认
       quitMic: false, //展示下麦界面
+      cancelInvUi: false,//取消连麦邀请界面
       defaultAvatarUrl:
         "https://cdn.ronghub.com/demo/default/rce_default_avatar.png",
       defaultAddress: config.picPath,
@@ -168,6 +177,7 @@ export default {
     RoomFit,
     Notice,
     liveQuitSeat,
+    liveCancelInv,
     CancelEvenSeat,
     UserList,
     UserCard,
@@ -574,18 +584,28 @@ export default {
       if (this.$data.isAnchor) {
         this.$data.qiutConfirm = true;
       } else {
-        const BackList = [
-          {
-            value: "收起房间",
-            // eslint-disable-next-line no-undef
-            img: "url(" + require("../../assets/roomicon/LeaveRoom.png") + ")",
-          },
-          {
-            value: "离开房间",
-            // eslint-disable-next-line no-undef
-            img: "url(" + require("../../assets/roomicon/CloseRoom.png") + ")",
-          },
-        ];
+        let BackList  =[];
+        if(this.$store.state.onMic){//在麦位上时不允许收起房间
+          BackList = [
+            {
+              value: "离开房间",
+              // eslint-disable-next-line no-undef
+              img: "url(" + require("../../assets/roomicon/CloseRoom.png") + ")",
+            }]
+        }else{
+          BackList = [
+            {
+              value: "收起房间",
+              // eslint-disable-next-line no-undef
+              img: "url(" + require("../../assets/roomicon/LeaveRoom.png") + ")",
+            },
+            {
+              value: "离开房间",
+              // eslint-disable-next-line no-undef
+              img: "url(" + require("../../assets/roomicon/CloseRoom.png") + ")",
+            },
+          ];
+        }
         console.log(this.$refs.RoomBack.RoomBackOpen);
         this.$refs.RoomBack.RoomBackOpen(BackList);
       }
@@ -737,19 +757,31 @@ export default {
             index: 1,
           }),
         });
+
       } else {
         this.$RCLiveRoomLib.leaveSeat(false, false);
       }
+    },
+    //取消邀请界面展示
+    cancelInv:function (){
+      this.$data.cancelInvUi = true;
+    },
+    //取消邀请动作
+    cancelInvAction:function (){
+      this.$RCLiveRoomLib.cancelInvitation(this.$store.state.picking);
+      this.$data.cancelInvUi = false;
+      this.$store.state.picking = '';
     },
     btnGift: function () {
       this.$data.showGift = true;
       let userInseatList = [];
       for (var i = 0; i < this.$RCLiveRoomLib.seatInfoList.length; i++) {
-        console.log(this.$RCLiveRoomLib.seatInfoList[i], this.$data.userlist);
+        console.log("当前麦位信息：",this.$RCLiveRoomLib.seatInfoList[i]);
         if (
           this.$RCLiveRoomLib.seatInfoList[i].userId &&
           this.$data.userlist[this.$RCLiveRoomLib.seatInfoList[i].userId]
         ) {
+          console.log("存在：",this.$data.userlist[this.$RCLiveRoomLib.seatInfoList[i].userId]);
           if (
             this.$store.state.roomInformation.createUser["userId"] ==
             this.$data.userlist[this.$RCLiveRoomLib.seatInfoList[i].userId][
@@ -764,6 +796,7 @@ export default {
               "creatuser"
             ] = false;
           }
+          console.log("在位上的：",this.$data.userlist[this.$RCLiveRoomLib.seatInfoList[i].userId]);
           userInseatList.push(
             this.$data.userlist[this.$RCLiveRoomLib.seatInfoList[i].userId]
           );
@@ -804,16 +837,16 @@ export default {
       console.log("isin room");
       this.$data.roomId = GetQueryString("roomid");
     }
-    this.$RCLiveRoomLib.on("remoteVideoTrack", (track) => {
-      console.log("rct", track._userId);
-      if (this.$data.userId == track._userId) {
-        console.log("自己的远端流", track);
-        this.$refs.video && track.play(this.$refs.video);
-      } else {
-        console.log("非自己远端流");
-        this.$refs.videoInVideo && track.play(this.$refs.videoInVideo);
-      }
-    });
+    // this.$RCLiveRoomLib.on("remoteVideoTrack", (track) => {
+    //   console.log("rct", track._userId);
+    //   if (this.$data.userId == track._userId) {
+    //     console.log("自己的远端流", track);
+    //     this.$refs.video && track.play(this.$refs.video);
+    //   } else {
+    //     console.log("非自己远端流");
+    //     this.$refs.videoInVideo && track.play(this.$refs.videoInVideo);
+    //   }
+    // });
     this.$store.state.giftNum = 0; //清零礼物
   },
   mounted() {
@@ -892,6 +925,7 @@ export default {
     this.$store.state.creatUser = false;
     this.$store.state.isFreeEnterSeat = false;
     this.$data.isAnchor = false;
+    this.$store.state.RequestSeatUserIds = [];
     next();
   },
 };

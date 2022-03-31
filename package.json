@@ -10,12 +10,17 @@
   "dependencies": {
     "@rongcloud/imlib-next": "^5.1.2",
     "@rongcloud/plugin-rtc": "^5.3.1",
-    "@rongcloud/rcliveroomlib": "^1.0.0",
+    "@rongcloud/rcliveroomlib": "^1.0.10",
     "@rongcloud/rcvoiceroomlib-v1": "^2.0.1",
     "axios": "^0.21.1",
     "better-scroll": "^2.4.2",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
+<<<<<<< HEAD
+=======
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^7.17.0",
+>>>>>>> d8af93ca42c9362d55c099dd6387c49c6e277d9b
     "js-md5": "^0.7.3",
     "recordrtc": "^5.6.2",
     "vconsole": "^3.11.0",
@@ -28,8 +33,11 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+<<<<<<< HEAD
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.5.0",
+=======
+>>>>>>> d8af93ca42c9362d55c099dd6387c49c6e277d9b
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
