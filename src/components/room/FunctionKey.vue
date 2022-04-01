@@ -243,7 +243,7 @@ export default {
               this.$store.dispatch("showToast", {
                 value: "融云 RTC:全部麦位已静音",
               });
-            }, 50);
+            }, 200);
           } catch (error) {
             this.$store.dispatch("showToast", {
               value: "全麦锁麦失败",
@@ -264,7 +264,7 @@ export default {
               this.$store.dispatch("showToast", {
                 value: "融云 RTC:已解锁全麦",
               });
-            }, 50);
+            }, 200);
           } catch (error) {
             this.$store.dispatch("showToast", {
               value: "解锁全麦失败",
@@ -285,7 +285,7 @@ export default {
               this.$store.dispatch("showToast", {
                 value: "融云 RTC：全部座位已锁定",
               });
-            }, 50);
+            }, 200);
           } catch (error) {
             this.$store.dispatch("showToast", {
               value: "全麦锁座失败",
@@ -306,7 +306,7 @@ export default {
               this.$store.dispatch("showToast", {
                 value: "融云 RTC：已解锁全座",
               });
-            }, 50);
+            }, 200);
           } catch (error) {
             this.$store.dispatch("showToast", {
               value: "解锁全座失败",
