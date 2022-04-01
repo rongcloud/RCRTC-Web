@@ -515,6 +515,7 @@ export default {
           });
         });
       }
+      this.$store.dispatch("getRoomType", "");
     }
     next();
   },

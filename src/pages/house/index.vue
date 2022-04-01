@@ -323,6 +323,7 @@ export default {
               ...item,
               ...this.$store.state.roomUserList[index],
             };
+
             break;
           }
         }

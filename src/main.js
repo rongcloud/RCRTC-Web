@@ -7,10 +7,10 @@ import store from './store/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import md5 from 'js-md5';
-import RCVoiceRoomLib from "@rongcloud/rcvoiceroomlib-v1";
 import RCLiveRoomLib from "@rongcloud/rcliveroomlib";
-
-//import RCLiveRoomLib from "../../../RCVoiceRoomLib-Web/dist/main"
+// import RCVoiceRoomLib from "@rongcloud/rcvoiceroomlib-v1";
+import RCVoiceRoomLib from "../src/request/main"
+// import RCVoiceRoomLib from "../../../语聊房正式版/RCVoiceRoomLib-Web/dist/main";
 
 import * as RongIMLib from "@rongcloud/imlib-next";
 import * as RongRTCLib from "@rongcloud/plugin-rtc";
@@ -21,7 +21,6 @@ const originalPush = VueRouter.prototype.push
 //修改原型对象中的push方法
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
-
 }
 Vue.use(VueRouter)
 Vue.use(router)

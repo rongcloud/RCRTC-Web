@@ -51,10 +51,7 @@ export default {
       request.getTextCheck({ text: this.textarea }).then((res) => {
         if (res.data.code == 10000) {
           this.$emit("clickYes", this.textarea);
-          if (
-            this.$RCLiveRoomLib.im &&
-            this.$RCLiveRoomLib.im.roomType == "live"
-          ) {
+          if (this.$store.state.roomType == "live") {
             this.$emit("NoticeUpdate", this.textarea);
           }
         } else {

@@ -191,12 +191,8 @@ export default {
         numIndex = numIndex + 8;
       }
       if (this.isSendAll) {
-        if (
-          this.$RCLiveRoomLib.im &&
-          this.$RCLiveRoomLib.im.roomType == "live"
-        ) {
-          console.log("发本地");
-          this.$RCLiveRoomLib.emit("onMessageReceived", {
+        if (this.$store.state.roomType == "live") {
+          this.$RCLiveRoomLib.emit("MessageReceived", {
             //发本地
             //模拟本地消息发送
             messageType: "RC:Chatroom:GiftAll",
@@ -249,10 +245,7 @@ export default {
       for (var i in this.$data.giftReceiver) {
         if (!this.isSendAll) {
           console.log("this.$store.state.userInfo.userId,", this.micData);
-          if (
-            this.$RCLiveRoomLib.im &&
-            this.$RCLiveRoomLib.im.roomType == "live"
-          ) {
+          if (this.$store.state.roomType == "live") {
             this.$RCLiveRoomLib.emit("onMessageReceived", {
               //发本地
               //模拟本地消息发送

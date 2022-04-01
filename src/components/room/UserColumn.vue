@@ -19,12 +19,7 @@
       <span class="usercilumnNamefoot"></span>
       <div
         class="usercilumnclick refused"
-        v-if="
-          apply &&
-          (this.$RCLiveRoomLib.im && this.$RCLiveRoomLib.im.roomType == 'live'
-            ? true
-            : false)
-        "
+        v-if="apply && (this.$store.state.roomType == 'live' ? true : false)"
         @click="refuse(item)"
       >
         拒绝
@@ -65,8 +60,7 @@ export default {
         case "接受":
           try {
             if (
-              this.$RCLiveRoomLib.im &&
-              this.$RCLiveRoomLib.im.roomType == "live" &&
+              this.$store.state.roomType == "live" &&
               this.$RCLiveRoomLib.im.seatInfoList[1].userId != ""
             ) {
               this.$store.dispatch("showToast", {
@@ -76,10 +70,7 @@ export default {
               return;
             }
             console.log();
-            if (
-              this.$RCLiveRoomLib.im &&
-              this.$RCLiveRoomLib.im.roomType == "live"
-            ) {
+            if (this.$store.state.roomType == "live") {
               await this.$RCLiveRoomLib.acceptRequestSeat(item.userId);
             } else {
               await this.$RCVoiceRoomLib.acceptRequestSeat(item.userId);
@@ -98,10 +89,7 @@ export default {
           break;
         case "邀请":
           try {
-            if (
-              this.$RCLiveRoomLib.im &&
-              this.$RCLiveRoomLib.im.roomType == "live"
-            ) {
+            if (this.$store.state.roomType == "live") {
               await this.$RCLiveRoomLib.pickUserToSeat(item.userId);
               this.$store.state.picking = item.userId;
             } else {

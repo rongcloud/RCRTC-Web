@@ -142,7 +142,7 @@ export default {
             });
             this.$RCVoiceRoomLib.im.messageUpdate("RC:Chatroom:Admin", message); //发message
             this.$RCVoiceRoomLib.im.messageUpdate("RC:VRLRefreshMsg", {
-              name: "VoiceRoomNeedRefreshManagerList",
+              name: "VoiceRoomNeedRefreshmanagers",
             });
           }
         });
