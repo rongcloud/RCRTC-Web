@@ -38,8 +38,8 @@ export default {
 
   created() {
     // window.rc = this.$RCVoiceRoomLib;online
-    this.$RCVoiceRoomLib.init({ AppKey: config.appKey.dev });
-    this.$RCLiveRoomLib.init(config.appKey.dev);
+    this.$RCVoiceRoomLib.init({ AppKey: config.appKey.online });
+    this.$RCLiveRoomLib.init(config.appKey.online);
     window.rc = this.$RCLiveRoomLib;
 
     console.log("getua", navigator.userAgent);
