@@ -1246,7 +1246,9 @@ export default {
         center: true,
       })
         .then(() => {
-          this.$RCVoiceRoomLib.enableSpeaker();
+          this.$RCVoiceRoomLib.enableSpeaker().then(() => {
+            this.SetSeatList(this.$store.state.GiftAndManageList);
+          });
         })
         .catch(() => {
           // console.log("取消");
