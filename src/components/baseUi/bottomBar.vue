@@ -8,7 +8,7 @@
     <div class="input">
       <div
         class="iconVoice"
-        v-if="!this.$store.state.creatUser"
+        v-if="!this.$store.state.creatUser && this.$store.state.roomType == 'live' "
         @mousedown="startRec"
         @mouseleave="cancelRec"
         @mouseup="endRec"

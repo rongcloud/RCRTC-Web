@@ -8,7 +8,7 @@ const config = {
         online: "uwd1c0sxukso1"
 
     },
-    // picPath: "https://apiv1-rcrtc.rongcloud.cn//file/show?path=",
+    //picPath: "https://apiv1-rcrtc.rongcloud.cn//file/show?path=",
     picPath: "https://rcrtc-api.rongcloud.net/file/show?path=",
     // online: "https://apiv1-rcrtc.rongcloud.cn//file/show?path="
 

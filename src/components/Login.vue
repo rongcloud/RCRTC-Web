@@ -173,6 +173,7 @@ export default {
             if (response.data.code == 10000) {
               this.$store.dispatch("updateUserInfo", response.data.data);
               this.$router.replace("/home");
+              console.log("登录账号",response.data.data);
               // this.$RCVoiceRoomLib.connect(response.data.data.imToken);
               // this.$RCLiveRoomLib.connect(response.data.data.imToken);
             } else {

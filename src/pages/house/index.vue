@@ -1233,6 +1233,7 @@ export default {
   mounted() {
     this.getRoominformation();
     console.log(navigator.userAgent);
+    console.log("当前seat：",this.$store.state.GiftAndManageList)
     if (
       navigator.userAgent.indexOf("Macintosh") > -1 &&
       navigator.userAgent.indexOf("Safari") > -1 &&

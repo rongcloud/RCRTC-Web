@@ -168,23 +168,39 @@ export default {
             time: 2000,
           });
 
+          if (this.$route.name != "login") {
+            this.$router.replace("/login");
+          }
+
           if (this.$route.name == "roomHouse") {
             await this.$RCVoiceRoomLib.leaveRoom(
               this.$RCVoiceRoomLib._roomidcli
             );
           }
 
-          if (this.$route.name != "home") {
-            this.$router.replace("/home");
+
+          // setTimeout(
+          //   () => {
+          //     this.$router.go(0);
+          //   },
+
+          //   2000
+          // );
+        }else{
+          this.$store.dispatch("showToast", {
+            value: "账号在其他地方登陆",
+            time: 2000,
+          });
+
+          if (this.$route.name != "login") {
+            this.$router.replace("/login");
           }
 
-          setTimeout(
-            () => {
-              this.$router.go(0);
-            },
-
-            2000
-          );
+          if (this.$route.name == "roomHouse") {
+            await this.$RCVoiceRoomLib.leaveRoom(
+              this.$RCVoiceRoomLib._roomidcli
+            );
+          }
         }
       }
 
@@ -811,13 +827,14 @@ export default {
           value: "账号在其他地方登录",
           time: 2000,
         });
+         if (this.$route.name != "login") {
+          this.$router.replace("/login");
+        }
         if (this.$route.name == "liveRoom") {
           await this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli);
         }
 
-        if (this.$route.name != "login") {
-          this.$router.replace("/login");
-        }
+     
       }
       this.$RCLiveRoomLib.im.body.addEventListener("DISCONNECT", () => {
         this.$store.dispatch("showToast", {
