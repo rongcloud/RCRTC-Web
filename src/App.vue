@@ -159,7 +159,7 @@ export default {
     //语聊房各种公屏消息
     this.$RCVoiceRoomLib.on("MessageReceived", async (m) => {
       // let m = message.messages[0];
-      // console.log("MessageReceived", m);
+      console.log("MessageReceived", m);
       //适配阻止多端登陆消息监听
       if (m.messageType == "RCMic:loginDeviceMsg") {
         if (m.content.platform != "web") {
@@ -580,6 +580,7 @@ export default {
 
     //语聊房账号被顶掉
     this.$RCVoiceRoomLib.on("ConnectioBreakOff", async () => {
+      console.log(this.$store.state.owerDisconnet);
       if (!this.$store.state.owerDisconnet) {
         if (this.$route.name == "roomHouse") {
           await this.$RCVoiceRoomLib.leaveRoom(this.$RCVoiceRoomLib._roomidcli);
@@ -588,6 +589,8 @@ export default {
           this.$router.replace("/home");
         }
         this.$router.go(0);
+      } else {
+        this.$store.dispatch("getOwerDisconnet", false);
       }
     });
 
@@ -1262,15 +1265,19 @@ export default {
 
     //账号被顶掉
     this.$RCLiveRoomLib.on("ConnectioBreakOff", async () => {
-      if (this.$route.name == "roomHouse") {
-        await this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli);
-      }
+      if (!this.$store.state.owerDisconnet) {
+        if (this.$route.name == "roomHouse") {
+          await this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli);
+        }
 
-      if (this.$route.name != "home") {
-        this.$router.replace("/home");
-      }
+        if (this.$route.name != "home") {
+          this.$router.replace("/home");
+        }
 
-      this.$router.go(0);
+        this.$router.go(0);
+      } else {
+        this.$store.dispatch("getOwerDisconnet", false);
+      }
     });
 
     //下麦

@@ -482,7 +482,7 @@ export default {
         console.log("getExist");
         this.$RCLiveRoomLib.rtc.body.videoNode = this.$refs.video;
         this.$RCLiveRoomLib.getExist();
-      }else{
+      } else {
         this.$RCLiveRoomLib.leaveRoom();
         this.$data.isInRoom = false;
       }
@@ -497,8 +497,10 @@ export default {
   beforeRouteLeave(to, from, next) {
     if (to.name == "home") {
       if (this.$data.roomType == "liveRoom") {
-        this.$RCLiveRoomLib.im.body.disconnect().then(() => {
-          console.log("成功断开");
+        this.$store.dispatch("getOwerDisconnet", true).then(() => {
+          this.$RCLiveRoomLib.im.body.disconnect().then(() => {
+            console.log("成功断开");
+          });
         });
       } else {
         this.$store.dispatch("getOwerDisconnet", true).then(() => {
