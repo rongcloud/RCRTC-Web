@@ -186,6 +186,21 @@ export default {
 
           //   2000
           // );
+        }else{
+          this.$store.dispatch("showToast", {
+            value: "账号在其他地方登陆",
+            time: 2000,
+          });
+
+          if (this.$route.name != "login") {
+            this.$router.replace("/login");
+          }
+
+          if (this.$route.name == "roomHouse") {
+            await this.$RCVoiceRoomLib.leaveRoom(
+              this.$RCVoiceRoomLib._roomidcli
+            );
+          }
         }
       }
 

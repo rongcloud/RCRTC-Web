@@ -191,7 +191,7 @@ export default {
     },
     sensitiveAdd: (obj) => {//添加屏蔽词
         return Axios
-            .post(baseURL + `mic/room/sensitive/add`, { ...obj }, {
+            .post(baseURL + `/mic/room/sensitive/add`, { ...obj }, {
                 headers: {
                     Authorization: store.state.userInfo.authorization,
                     BusinessToken: btoken,

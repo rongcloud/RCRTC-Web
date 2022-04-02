@@ -68,6 +68,7 @@ const store = new Vuex.Store({
         //设置用户信息
         setUserInfo(state, newVal) {
             state.userInfo = { ...state.userInfo, ...newVal }
+            console.log("更新用户资料",state.userInfo);
         },
         //创建页面图片全局化
         setImgList(state, newVal) {
