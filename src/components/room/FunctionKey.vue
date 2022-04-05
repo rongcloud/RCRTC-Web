@@ -230,6 +230,7 @@ export default {
         case "全麦锁麦":
           try {
             this.$emit("closeRoomFit");
+            console.log(this.$RCVoiceRoomLib.roomInfo);
             this.$RCVoiceRoomLib
               .setRoomInfo({
                 ...this.$RCVoiceRoomLib.roomInfo,
@@ -254,6 +255,7 @@ export default {
           break;
         case "解锁全麦":
           this.$emit("closeRoomFit");
+          console.log(this.$RCVoiceRoomLib.roomInfo);
           try {
             await this.$RCVoiceRoomLib.setRoomInfo({
               ...this.$RCVoiceRoomLib.roomInfo,
@@ -336,7 +338,6 @@ export default {
           try {
             await this.$RCVoiceRoomLib.setRoomInfo({
               ...this.$RCVoiceRoomLib.roomInfo,
-              isFreeEnterSeat: false,
               isLockAll: false,
               isMuteAll: false,
               seatCount: 5,
@@ -372,7 +373,6 @@ export default {
           try {
             await this.$RCVoiceRoomLib.setRoomInfo({
               ...this.$RCVoiceRoomLib.roomInfo,
-              isFreeEnterSeat: false,
               isLockAll: false,
               isMuteAll: false,
               seatCount: 9,

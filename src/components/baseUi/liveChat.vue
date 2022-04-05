@@ -44,11 +44,10 @@ export default {
       that.$refs.container.offsetHeight - that.$refs.body.offsetHeight + "px";
   },
   mounted() {
-    // console.log(this.$store.state.roomInformation);
-    if (this.$store.state.roomInformation.roomType != 3) {
-      //非直播房间直接发送欢迎
-      this.welcome();
-    }
+    // if (this.$store.state.roomType != "live") {
+    //非直播房间直接发送欢迎
+    // this.welcome();
+    // }
 
     let status = dargStatus.free;
     let startY;
@@ -152,12 +151,19 @@ export default {
       this.$emit("onGiftMsg");
     },
     welcome: function () {
+      console.log(123123123);
       this.$nextTick(() => {
         setTimeout(() => {
           let roomtype = "融云 RTC 语聊房";
-          if (this.$store.state.roomInformation.roomType == 3) {
+          if (this.$store.state.roomType == "live") {
             roomtype = "融云 RTC 直播间";
           }
+          // let title;
+          // if (this.$store.state.roomTitle == "undefined") {
+          //   title = this.$store.state.roomInformation.roomName;
+          // } else {
+          //   title = this.$store.state.roomTitle;
+          // }
           this.chatList = [
             "<span style='color:rgba(106, 159, 255, 1);'> 欢迎来到  " +
               this.$store.state.roomInformation.roomName +

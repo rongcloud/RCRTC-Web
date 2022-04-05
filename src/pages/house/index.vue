@@ -107,7 +107,7 @@
       <!-- <el-button
         @click="getSeatInfolist"
         type="primary"
-        style="margin-left: 16px"
+        style="margin-left: 16px; z-index: 10000000; position: absolute"
       >
         获取远程数据
       </el-button> -->
@@ -1005,6 +1005,7 @@ export default {
               res.data.data.backgroundUrl
             );
             this.$store.dispatch("getroomTitle", res.data.data.roomName);
+
             this.$store.dispatch("getroomPrivate", {
               isPrivate: res.data.data.isPrivate,
               password: res.data.data.password,
@@ -1014,6 +1015,7 @@ export default {
             this.getroomuser(createUser);
             this.$nextTick(() => {
               this.$store.dispatch("getChatroom", this.$refs.chatroom);
+              this.$refs.chatroom.welcome();
               this.roomId = this.$RCVoiceRoomLib._roomidcli;
               // console.log(this.$RCVoiceRoomLib);
               if (
@@ -1233,7 +1235,7 @@ export default {
   mounted() {
     this.getRoominformation();
     console.log(navigator.userAgent);
-    console.log("当前seat：",this.$store.state.GiftAndManageList)
+    console.log("当前seat：", this.$store.state.GiftAndManageList);
     if (
       navigator.userAgent.indexOf("Macintosh") > -1 &&
       navigator.userAgent.indexOf("Safari") > -1 &&

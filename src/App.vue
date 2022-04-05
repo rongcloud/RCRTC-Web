@@ -148,7 +148,7 @@ export default {
     this.$RCVoiceRoomLib.on("roomInfoDidUpdate", (roomInfo) => {
       console.log(roomInfo);
       // console.log(this.$RCVoiceRoomLib.roomInfo);
-      this.$store.dispatch("getroomTitle", roomInfo.roomName);
+      // this.$store.dispatch("getroomTitle", roomInfo.roomName);
     });
 
     //语聊房被踢出房间
@@ -178,30 +178,29 @@ export default {
             );
           }
 
-
           // setTimeout(
           //   () => {
           //     this.$router.go(0);
           //   },
-
           //   2000
           // );
-        }else{
-          this.$store.dispatch("showToast", {
-            value: "账号在其他地方登陆",
-            time: 2000,
-          });
-
-          if (this.$route.name != "login") {
-            this.$router.replace("/login");
-          }
-
-          if (this.$route.name == "roomHouse") {
-            await this.$RCVoiceRoomLib.leaveRoom(
-              this.$RCVoiceRoomLib._roomidcli
-            );
-          }
         }
+        //  else {
+        //   this.$store.dispatch("showToast", {
+        //     value: "账号在其他地方登陆",
+        //     time: 2000,
+        //   });
+
+        //   if (this.$route.name != "login") {
+        //     this.$router.replace("/login");
+        //   }
+
+        //   if (this.$route.name == "roomHouse") {
+        //     await this.$RCVoiceRoomLib.leaveRoom(
+        //       this.$RCVoiceRoomLib._roomidcli
+        //     );
+        //   }
+        // }
       }
 
       //适配数美审核消息监听变更
@@ -453,9 +452,12 @@ export default {
             }
           }
           if (index > -1) {
-            array.splice(index, 1);
+            this.$store.state.sensitiveList.splice(index, 1);
           }
-          this.$store.dispatch("getsensitiveList", [...array]);
+          console.log(array);
+          this.$store.dispatch("getsensitiveList", [
+            ...this.$store.state.sensitiveList,
+          ]);
           break;
         default:
           break;
@@ -827,14 +829,12 @@ export default {
           value: "账号在其他地方登录",
           time: 2000,
         });
-         if (this.$route.name != "login") {
+        if (this.$route.name != "login") {
           this.$router.replace("/login");
         }
         if (this.$route.name == "liveRoom") {
           await this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli);
         }
-
-     
       }
       this.$RCLiveRoomLib.im.body.addEventListener("DISCONNECT", () => {
         this.$store.dispatch("showToast", {
