@@ -467,7 +467,7 @@ export default {
           ) {
             //如果是直播间且有自己创建的房间 退出该房间
             console.log("已经有自己创建的房间需要删除一下");
-            //  this.$router.go(0);
+             this.$router.go(0);
             request.deleteRoom({
               roomId: response.data.data.rooms[i].roomId,
             });

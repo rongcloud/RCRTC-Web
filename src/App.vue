@@ -41,7 +41,7 @@ export default {
     this.$RCVoiceRoomLib.init({ AppKey: config.appKey.dev });
     this.$RCLiveRoomLib.init(config.appKey.dev);
     window.rc = this.$RCLiveRoomLib;
-
+    window.cc = this.$RCVoiceRoomLib;
     console.log("getua", navigator.userAgent);
     //Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36
     // if (
@@ -161,7 +161,7 @@ export default {
       // let m = message.messages[0];
       console.log("MessageReceived", m);
       //适配阻止多端登陆消息监听
-      if (m.messageType == "RCMic:loginDeviceMsg") {
+      if (m.messageType == "RCMic:loginDeviceMsg" && !m.isOffLineMessage) {
         if (m.content.platform != "web") {
           this.$store.dispatch("showToast", {
             value: "移动端登陆",
@@ -826,7 +826,7 @@ export default {
       console.log("MessageReceived", m);
       //适配阻止多端登陆消息监听
       console.log("收到消息", m);
-      if (m.messageType == "RCMic:loginDeviceMsg") {
+      if (m.messageType == "RCMic:loginDeviceMsg" && !m.isOffLineMessage) {
         this.$store.dispatch("showToast", {
           value: "账号在其他地方登录",
           time: 2000,

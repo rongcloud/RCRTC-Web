@@ -494,6 +494,7 @@ export default {
 
     //设置座位List
     SetSeatList: async function (resValue) {
+     
       this.houserMap = {};
       let roomUserListMap = {};
       this.itemList = [];
