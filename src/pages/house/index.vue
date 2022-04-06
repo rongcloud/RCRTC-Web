@@ -494,7 +494,6 @@ export default {
 
     //设置座位List
     SetSeatList: async function (resValue) {
-     
       this.houserMap = {};
       let roomUserListMap = {};
       this.itemList = [];
@@ -1056,8 +1055,8 @@ export default {
             console.log("err", res.data);
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         });
     },
 
@@ -1229,14 +1228,18 @@ export default {
   },
   created() {
     this.$nextTick(async () => {
-      const arr = await this.$RCVoiceRoomLib.getRequestSeatUserIds();
-      this.$store.dispatch("getRequestSeatUserIds", arr);
+      if (this.$RCVoiceRoomLib._roomidcli) {
+        const arr = await this.$RCVoiceRoomLib.getRequestSeatUserIds();
+        this.$store.dispatch("getRequestSeatUserIds", arr);
+      }
     });
   },
   mounted() {
-    this.getRoominformation();
+    if (this.$RCVoiceRoomLib._roomidcli) {
+      this.getRoominformation();
+    }
     console.log(navigator.userAgent);
-    console.log("当前seat：", this.$store.state.GiftAndManageList);
+    // console.log("当前seat：", this.$store.state.GiftAndManageList);
     if (
       navigator.userAgent.indexOf("Macintosh") > -1 &&
       navigator.userAgent.indexOf("Safari") > -1 &&

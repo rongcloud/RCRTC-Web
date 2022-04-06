@@ -140,15 +140,15 @@ export default {
 
     //语聊房座位发生变化
     this.$RCVoiceRoomLib.on("seatInfoDidUpdate", () => {
-      console.log(this.$RCVoiceRoomLib.seatInfoList);
+      // console.log(this.$RCVoiceRoomLib.seatInfoList);
       this.$store.dispatch("getSeatInfoList");
     });
 
     //语聊房房间信息发声变化
     this.$RCVoiceRoomLib.on("roomInfoDidUpdate", (roomInfo) => {
-      console.log(roomInfo);
+      // console.log(roomInfo);
       // console.log(this.$RCVoiceRoomLib.roomInfo);
-      // this.$store.dispatch("getroomTitle", roomInfo.roomName);
+      this.$store.dispatch("getroomTitle", roomInfo.roomName);
     });
 
     //语聊房被踢出房间
