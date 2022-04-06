@@ -432,14 +432,16 @@ export default {
           }
           break;
         case "EVENT_ADD_SHIELD":
-          this.$store.dispatch("getsensitiveList", {
-            value: [
-              ...this.$store.state.sensitiveList,
-              { name: content, id: Math.random() },
-            ],
-          });
+          // console.log(this.$store.state.sensitiveList);
+          // console.log(content);
+          this.$store.dispatch("getsensitiveList", [
+            ...this.$store.state.sensitiveList,
+            { name: content, id: Math.random() },
+          ]);
           break;
         case "EVENT_DELETE_SHIELD":
+          // console.log(this.$store.state.sensitiveList);
+          // console.log(content);
           // eslint-disable-next-line no-case-declarations
           let array = JSON.parse(
             JSON.stringify(this.$store.state.sensitiveList)
@@ -454,7 +456,7 @@ export default {
           if (index > -1) {
             this.$store.state.sensitiveList.splice(index, 1);
           }
-          console.log(array);
+          // console.log(array);
           this.$store.dispatch("getsensitiveList", [
             ...this.$store.state.sensitiveList,
           ]);
