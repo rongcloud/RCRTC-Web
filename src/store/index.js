@@ -162,6 +162,7 @@ const store = new Vuex.Store({
         },
         //设置屏蔽词数据
         setsensitiveList(state, newVal) {
+            console.log("设置",state,newVal);
             state.sensitiveList = newVal.value
         },
         //主动断开连接
@@ -285,6 +286,7 @@ const store = new Vuex.Store({
 
         //获取屏蔽词
         getsensitiveList({ commit }, newVal) {
+            console.log("获取屏蔽词",newVal)
             commit('setsensitiveList', { value: newVal })
         },
 

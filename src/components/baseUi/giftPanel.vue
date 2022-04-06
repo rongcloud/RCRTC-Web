@@ -217,7 +217,8 @@ export default {
           };
           this.$RCLiveRoomLib.im.messageUpdate("RC:Chatroom:GiftAll", c); //发im
         } else {
-          this.$RCVoiceRoomLib.emit("onMessageReceived", {
+          
+          this.$RCVoiceRoomLib.emit("MessageReceived", {
             //发本地
             //模拟本地消息发送
             messageType: "RC:Chatroom:GiftAll",
