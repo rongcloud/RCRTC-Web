@@ -121,7 +121,7 @@ export default {
               await this.$RCVoiceRoomLib.joinRoom(roomId);
               this.$router.push("/room/house");
             }
-            await this.$RCVoiceRoomLib.joinRoom(roomId);
+          //  await this.$RCVoiceRoomLib.joinRoom(roomId);
             let txtEnter = {
               userId: this.$RCVoiceRoomLib.im.userId,
               userName: this.$store.state.userInfo.userName,
