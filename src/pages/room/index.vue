@@ -462,7 +462,7 @@ export default {
     if (this.$data.roomType == "liveRoom") {
       reqObj.type = 3;
     }
-
+    console.log(this.$store.state.roomType);
     if (this.$store.state.roomType) {
       console.log(this.$store.state.roomType);
       request
@@ -516,20 +516,20 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (to.name == "home") {
-      if (this.$data.roomType == "liveRoom") {
-        this.$store.dispatch("getOwerDisconnet", true).then(() => {
-          this.$RCLiveRoomLib.im.body.disconnect().then(() => {
-            console.log("成功断开");
-          });
-        });
-      } else {
-        this.$store.dispatch("getOwerDisconnet", true).then(() => {
-          this.$RCVoiceRoomLib.im.body.disconnect().then(() => {
-            console.log("成功断开");
-          });
-        });
-      }
-      this.$store.dispatch("getRoomType", "");
+      // if (this.$data.roomType == "liveRoom") {
+      //   this.$store.dispatch("getOwerDisconnet", true).then(() => {
+      //     this.$RCLiveRoomLib.im.body.disconnect().then(() => {
+      //       console.log("成功断开");
+      //     });
+      //   });
+      // } else {
+      //   this.$store.dispatch("getOwerDisconnet", true).then(() => {
+      //     this.$RCVoiceRoomLib.im.body.disconnect().then(() => {
+      //       console.log("成功断开");
+      //     });
+      //   });
+      // }
+      // this.$store.dispatch("getRoomType", "");
     }
     next();
   },
