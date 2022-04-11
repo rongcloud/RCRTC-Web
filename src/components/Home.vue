@@ -127,8 +127,14 @@ export default {
         this.$router.push("/login");
         return;
       }
-      this.$store.dispatch("getRoomType", "voice");
-      this.$RCVoiceRoomLib.connect(this.$store.state.userInfo.imToken);
+      if (this.$store.state.roomType != "voice") {
+        this.$store.dispatch("getOwerDisconnet", true).then(() => {
+          this.$RCLiveRoomLib.im.body.disconnect().then(() => {
+            this.$store.dispatch("getRoomType", "voice");
+            this.$RCVoiceRoomLib.connect(this.$store.state.userInfo.imToken);
+          });
+        });
+      }
       this.$router.push("/room");
     },
     lll() {
@@ -139,8 +145,14 @@ export default {
         this.$router.push("/login");
         return;
       }
-      this.$RCLiveRoomLib.connect(this.$store.state.userInfo.imToken);
-      this.$store.dispatch("getRoomType", "live");
+      if (this.$store.state.roomType != "live") {
+        this.$store.dispatch("getOwerDisconnet", true).then(() => {
+          this.$RCVoiceRoomLib.im.body.disconnect().then(() => {
+            this.$RCLiveRoomLib.connect(this.$store.state.userInfo.imToken);
+            this.$store.dispatch("getRoomType", "live");
+          });
+        });
+      }
       this.$router.push("/room?roomType=liveRoom");
     },
     clickVoiceRadio: function () {

@@ -167,6 +167,7 @@ export default {
       roomType: "", //房间类型
       isInRoom: false, //在房间内
       title: "语聊房",
+      antiShake: true //防抖 防止频繁创建房间
     };
   },
   components: {
@@ -187,80 +188,92 @@ export default {
   },
   methods: {
     //创建房间
-     creatRoom: function () {
-      console.log("ct");
+    creatRoom: function () {
+      console.log("创建房间",1);
+      if(!this.$data.antiShake)return;
+      this.$data.antiShake = false;
       console.log(this.$RCLiveRoomLib.im);
       //增加提前检查麦克风防止上麦失败
-      navigator.getUserMedia({audio:true}, ()=> { 
-        if (this.$data.roomType == "liveRoom") {
-          if (
-            GetQueryString("roomType") &&
-            GetQueryString("roomType") == "liveRoom"
-          ) {
-            //是否创建直播房间 先查询 userCheck
-            request
-              .checkUser(this.$store.state.userInfo.userId)
-              .then(async (res) => {
-                console.log("checkresout", res);
-                if (res && res.data && res.data.data && res.data.data.roomId) {
-                  console.log("用户有创建房间");
+      navigator.getUserMedia(
+        { audio: true },
+        () => {
+          if (this.$data.roomType == "liveRoom") {
+            if (
+              GetQueryString("roomType") &&
+              GetQueryString("roomType") == "liveRoom"
+            ) {
+              //是否创建直播房间 先查询 userCheck
+              request
+                .checkUser(this.$store.state.userInfo.userId)
+                .then(async (res) => {
+                  console.log("checkresout", res);
+                  this.$data.antiShake = true;
+                  if (
+                    res &&
+                    res.data &&
+                    res.data.data &&
+                    res.data.data.roomId
+                  ) {
+                    console.log("用户有创建房间");
 
-                  this.$confirm("存在已创建的房间是否加入?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning",
-                    center: true,
-                  })
-                    .then(() => {
-                      this.$router.push(
-                        "/live?isAnchor=true&&roomId=" + res.data.data.roomId
-                      );
+                    this.$confirm("存在已创建的房间是否加入?", "提示", {
+                      confirmButtonText: "确定",
+                      cancelButtonText: "取消",
+                      type: "warning",
+                      center: true,
                     })
-                    .catch(() => {
-                      request.deleteRoom({
-                        roomId: res.data.data.roomId,
+                      .then(() => {
+                        this.$router.push(
+                          "/live?isAnchor=true&&roomId=" + res.data.data.roomId
+                        );
+                      })
+                      .catch(() => {
+                        request.deleteRoom({
+                          roomId: res.data.data.roomId,
+                        });
                       });
-                    });
-                } else {
-                  console.log(
-                    "用户没有创建房间  创建新房间",
-                    this.$store.state.userInfo
-                  );
-                  this.$router.push("/live?isAnchor=true");
-                }
-              });
-          } else {
-            this.drawer = true;
-            this.imgData = this.$store.state.imgList;
-            this.imgStyle = this.$store.state.imgList[0].url || "";
-            this.updateObj.themePictureUrl =
-              coverPhoto[Math.floor(Math.random() * 6)];
-            this.imgBackground = coverPhoto[Math.floor(Math.random() * 6)];
-            this.drawer = true;
-          }
-        } else {
-          request.getUserCheck().then((res) => {
-            if (res.data.code == 10000) {
+                  } else {
+                    console.log(
+                      "用户没有创建房间  创建新房间",
+                      this.$store.state.userInfo
+                    );
+                    this.$router.push("/live?isAnchor=true");
+                  }
+                });
+            } else {
+              this.drawer = true;
               this.imgData = this.$store.state.imgList;
               this.imgStyle = this.$store.state.imgList[0].url || "";
               this.updateObj.themePictureUrl =
                 coverPhoto[Math.floor(Math.random() * 6)];
               this.imgBackground = coverPhoto[Math.floor(Math.random() * 6)];
               this.drawer = true;
-            } else if (res.data.code == 30016) {
-              this.$refs.ChoiceBox.setPopup({
-                value: "您已创建过房间,是否直接进入",
-                roomId: res.data.data.roomId,
-              });
             }
-          });
-        }
-      }, ()=> {
-         this.$store.dispatch("showToast", {
+          } else {
+            request.getUserCheck().then((res) => {
+              if (res.data.code == 10000) {
+                this.imgData = this.$store.state.imgList;
+                this.imgStyle = this.$store.state.imgList[0].url || "";
+                this.updateObj.themePictureUrl =
+                  coverPhoto[Math.floor(Math.random() * 6)];
+                this.imgBackground = coverPhoto[Math.floor(Math.random() * 6)];
+                this.drawer = true;
+              } else if (res.data.code == 30016) {
+                this.$refs.ChoiceBox.setPopup({
+                  value: "您已创建过房间,是否直接进入",
+                  roomId: res.data.data.roomId,
+                });
+              }
+            });
+          }
+        },
+        () => {
+          this.$data.antiShake = true;
+          this.$store.dispatch("showToast", {
             value: "未检测到麦克风设备",
           });
-          
-      });
+        }
+      );
     },
 
     //选择背景图片
@@ -426,10 +439,6 @@ export default {
     },
   },
   created() {
-    console.log(
-      "==++++++++++++++++++=================>",
-      GetQueryString("roomType")
-    );
     if (GetQueryString("roomType")) {
       if (GetQueryString("roomType") == "liveRoom") {
         this.$data.roomType = "liveRoom";
@@ -451,34 +460,38 @@ export default {
       page: 1,
       size: 10,
     };
-
     if (this.$data.roomType == "liveRoom") {
       reqObj.type = 3;
     }
-    request
-      .roomList(reqObj)
-      .then((response) => {
-        this.$store.dispatch("changesImgList", response.data.data.images);
-        for (var i = 0; i < response.data.data.rooms.length; i++) {
-          if (
-            response.data.data.rooms[i].createUser.userId ==
-              this.$store.state.userInfo.userId &&
-            reqObj.type == 3
-          ) {
-            //如果是直播间且有自己创建的房间 退出该房间
-            console.log("已经有自己创建的房间需要删除一下");
-             this.$router.go(0);
-            request.deleteRoom({
-              roomId: response.data.data.rooms[i].roomId,
-            });
-            response.data.data.rooms.splice(i, 1);
+    console.log(this.$store.state.roomType);
+    if (this.$store.state.roomType) {
+      console.log(this.$store.state.roomType);
+      request
+        .roomList(reqObj)
+        .then((response) => {
+          this.$store.dispatch("changesImgList", response.data.data.images);
+          for (var i = 0; i < response.data.data.rooms.length; i++) {
+            if (
+              response.data.data.rooms[i].createUser.userId ==
+                this.$store.state.userInfo.userId &&
+              reqObj.type == 3
+            ) {
+              //如果是直播间且有自己创建的房间 退出该房间
+              console.log("已经有自己创建的房间需要删除一下");
+              location.reload();
+              request.deleteRoom({
+                roomId: response.data.data.rooms[i].roomId,
+              });
+              response.data.data.rooms.splice(i, 1);
+            }
           }
-        }
-        this.$store.dispatch("changesRoomsList", response.data.data.rooms);
-      })
-      .catch((err) => {
-        console.error("请求失败", err);
-      });
+          this.$store.dispatch("changesRoomsList", response.data.data.rooms);
+        })
+        .catch((err) => {
+          console.error("请求失败", err);
+        });
+    }
+
     //小窗逻辑
     console.log("当前sdk状态", this.$RCLiveRoomLib);
     console.log("vidioNode", this.$refs);
@@ -504,20 +517,20 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     if (to.name == "home") {
-      if (this.$data.roomType == "liveRoom") {
-        this.$store.dispatch("getOwerDisconnet", true).then(() => {
-          this.$RCLiveRoomLib.im.body.disconnect().then(() => {
-            console.log("成功断开");
-          });
-        });
-      } else {
-        this.$store.dispatch("getOwerDisconnet", true).then(() => {
-          this.$RCVoiceRoomLib.im.body.disconnect().then(() => {
-            console.log("成功断开");
-          });
-        });
-      }
-      this.$store.dispatch("getRoomType", "");
+      // if (this.$data.roomType == "liveRoom") {
+      //   this.$store.dispatch("getOwerDisconnet", true).then(() => {
+      //     this.$RCLiveRoomLib.im.body.disconnect().then(() => {
+      //       console.log("成功断开");
+      //     });
+      //   });
+      // } else {
+      //   this.$store.dispatch("getOwerDisconnet", true).then(() => {
+      //     this.$RCVoiceRoomLib.im.body.disconnect().then(() => {
+      //       console.log("成功断开");
+      //     });
+      //   });
+      // }
+      // this.$store.dispatch("getRoomType", "");
     }
     next();
   },

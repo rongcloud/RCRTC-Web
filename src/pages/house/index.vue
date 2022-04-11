@@ -1106,10 +1106,10 @@ export default {
               item
             ) {
               await this.$RCVoiceRoomLib.enterSeat(0);
-              console.log(
-                "isDisableAudioRecording",
-                this.$RCVoiceRoomLib.isDisableAudioRecording()
-              );
+              // console.log(
+              //   "isDisableAudioRecording",
+              //   this.$RCVoiceRoomLib.isDisableAudioRecording()
+              // );
               if (
                 "extra" in this.$RCVoiceRoomLib.seatInfoList[0] &&
                 JSON.parse(this.$RCVoiceRoomLib.seatInfoList[0]["extra"])[
@@ -1119,9 +1119,9 @@ export default {
                 this.$RCVoiceRoomLib.disableAudioRecording(true);
               }
 
-              // setTimeout(() => {
-              //   this.SetSeatList(Obj);
-              // }, 50);
+              setTimeout(() => {
+                this.SetSeatList(Obj);
+              }, 500);
             }
           });
         })
@@ -1235,6 +1235,7 @@ export default {
     });
   },
   mounted() {
+    console.log('mounted::::');
     if (this.$RCVoiceRoomLib._roomidcli) {
       this.getRoominformation();
     }

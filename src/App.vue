@@ -180,7 +180,7 @@ export default {
 
           // setTimeout(
           //   () => {
-          //     this.$router.go(0);
+          //     location.reload()
           //   },
           //   2000
           // );
@@ -223,7 +223,7 @@ export default {
             this.$router.replace("/home");
           }
 
-          this.$router.go(0);
+          location.reload();
         }
       }
 
@@ -532,7 +532,7 @@ export default {
     this.$RCVoiceRoomLib.on("RTCPeerConnectionCloseByException", async () => {
       await this.$RCVoiceRoomLib.leaveRoom(this.$RCVoiceRoomLib._roomidcli);
       this.$router.replace("/home");
-      this.$router.go(0);
+      location.reload();
     });
 
     //语聊房被邀请上麦
@@ -608,7 +608,7 @@ export default {
         if (this.$route.name != "home") {
           this.$router.replace("/home");
         }
-        this.$router.go(0);
+        location.reload();
       } else {
         this.$store.dispatch("getOwerDisconnet", false);
       }
@@ -866,7 +866,7 @@ export default {
             this.$router.replace("/home");
           }
 
-          this.$router.go(0);
+          location.reload();
         }
       }
 
@@ -1293,7 +1293,7 @@ export default {
           this.$router.replace("/home");
         }
 
-        this.$router.go(0);
+        location.reload();
       } else {
         this.$store.dispatch("getOwerDisconnet", false);
       }

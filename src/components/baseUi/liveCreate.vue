@@ -51,6 +51,7 @@ export default {
       roomName: "",
       btoken: btoken,
       passWord: "",
+      antiShake: true
     };
   },
   props: {
@@ -89,6 +90,8 @@ export default {
       }
     },
     startShow: function () {
+      if(!this.$data.antiShake)return;
+      this.$data.antiShake = false;
       let data = {
         name: this.$data.roomName,
         isPrivate: this.$data.radio,
@@ -101,6 +104,7 @@ export default {
       }
       console.log("config.picPath", config.picPath, this.$data.imgBackground);
       Request.creatLiveRoom(data).then(async (res) => {
+        this.$data.antiShake = true;
         if (res.data.code != 10000) {
           // console.log(res.data.msg);
           this.$store.dispatch("showToast", {

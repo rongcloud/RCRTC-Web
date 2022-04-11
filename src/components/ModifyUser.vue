@@ -118,7 +118,7 @@ export default {
       this.dialogFormVisible = false;
       // this.$forceUpdate();
       this.$router.push("/home");
-      this.$router.go(0);
+      location.reload();
     },
     //focus动作
     onOpen: function () {

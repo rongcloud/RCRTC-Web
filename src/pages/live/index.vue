@@ -821,6 +821,8 @@ export default {
 
       this.$data.status = 2; // 房间初始化成功
       this.createRoom();
+    
+      
     },
     onRoomBackClose: function () {},
   },

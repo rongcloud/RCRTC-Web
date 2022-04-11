@@ -173,7 +173,9 @@ export default {
             if (response.data.code == 10000) {
               this.$store.dispatch("updateUserInfo", response.data.data);
               this.$router.replace("/home");
-              console.log("登录账号",response.data.data);
+              console.log("登录账号", response.data.data);
+              this.$store.dispatch("getRoomType", "voice");
+              this.$RCVoiceRoomLib.connect(this.$store.state.userInfo.imToken);
               // this.$RCVoiceRoomLib.connect(response.data.data.imToken);
               // this.$RCLiveRoomLib.connect(response.data.data.imToken);
             } else {
