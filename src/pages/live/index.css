@@ -6,7 +6,7 @@
 }
 .videocontainer {
    position:fixed;
-   object-fit: cover;
+   object-fit: contain;
    top:0;
    z-index: 0;
 }

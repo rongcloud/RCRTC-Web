@@ -3,7 +3,11 @@
     <div
       id="app"
       class="app"
-      v-bind:style="{ height: dh + 'px', width: dw + 'px' }"
+      v-bind:style="{
+        height: dh + 'px',
+        width: dw + 'px',
+        maxWidth: dw + 'px',
+      }"
     >
       <PromptBox />
       <router-view></router-view>
@@ -38,11 +42,17 @@ export default {
 
   created() {
     // window.rc = this.$RCVoiceRoomLib;online
-    this.$RCVoiceRoomLib.init({ AppKey: config.appKey.dev });
-    this.$RCLiveRoomLib.init(config.appKey.dev);
+    this.$RCVoiceRoomLib.init({ AppKey: config.appKey.online });
+    this.$RCLiveRoomLib.init(config.appKey.online);
     window.rc = this.$RCLiveRoomLib;
     window.cc = this.$RCVoiceRoomLib;
     console.log("getua", navigator.userAgent);
+    // var customUserAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36`;
+    // //修改后的userAgent
+    // Object.defineProperty(navigator, "userAgent", {
+    //   value: customUserAgent,
+    //   writable: false,
+    // });
     //Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36
     // if (
     //   navigator.userAgent ==
@@ -98,39 +108,59 @@ export default {
   // },
 
   mounted() {
-    this.$data.dw = window.innerHeight * 0.5625;
-    this.$data.dh = window.innerHeight;
+    var browser = {
+      versions: (function () {
+        var u = navigator.userAgent;
+        return {
+          //移动终端浏览器版本信息
+          trident: u.indexOf("Trident") > -1, //IE内核
+          presto: u.indexOf("Presto") > -1, //opera内核
+          webKit: u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
+          gecko: u.indexOf("Gecko") > -1 && u.indexOf("KHTML") == -1, //火狐内核
+          mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+          ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+          android: u.indexOf("Android") > -1 || u.indexOf("Linux") > -1, //android终端或uc浏览器
+          iPhone: u.indexOf("iPhone") > -1, //是否为iPhone或者QQHD浏览器
+          iPad: u.indexOf("iPad") > -1, //是否iPad
+          webApp: u.indexOf("Safari") == -1, //是否web应该程序，没有头部与底部
+        };
+      })(),
+      language: (navigator.browserLanguage || navigator.language).toLowerCase(),
+    };
+
+    if(browser.versions.mobile){//手机初始化
+      if (screen.height * 0.5625 > screen.width) {
+          this.$data.dw = screen.width;
+        } else {
+          this.$data.dw = screen.height * 0.5625;
+        }
+        this.$data.dh = screen.height;
+    }else{//pc初始化
+      this.$data.dw = 375;
+      this.$data.dh = window.innerHeight;
+    }
     window.onresize = () => {
       console.log("resiz");
-      var browser = {
-        versions: (function () {
-          var u = navigator.userAgent;
-          return {
-            //移动终端浏览器版本信息
-            trident: u.indexOf("Trident") > -1, //IE内核
-            presto: u.indexOf("Presto") > -1, //opera内核
-            webKit: u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
-            gecko: u.indexOf("Gecko") > -1 && u.indexOf("KHTML") == -1, //火狐内核
-            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-            android: u.indexOf("Android") > -1 || u.indexOf("Linux") > -1, //android终端或uc浏览器
-            iPhone: u.indexOf("iPhone") > -1, //是否为iPhone或者QQHD浏览器
-            iPad: u.indexOf("iPad") > -1, //是否iPad
-            webApp: u.indexOf("Safari") == -1, //是否web应该程序，没有头部与底部
-          };
-        })(),
-        language: (
-          navigator.browserLanguage || navigator.language
-        ).toLowerCase(),
-      };
+      var deviceWidth =
+        document.documentElement.clientWidth || window.innerWidth;
+      if (deviceWidth >= 375) {
+        deviceWidth = 375;
+      }
+      if (deviceWidth <= 320) {
+        deviceWidth = 320;
+      }
+      document.documentElement.style.fontSize = deviceWidth / 3.75 + "px";
+
       if (browser.versions.mobile) {
         //手机端不给重置页面 防止输入法 弹出某些页面会乱
       } else {
         console.log("pcreseize");
-        this.$data.dw = window.innerHeight * 0.5625;
+        this.$data.dw = 375;
         this.$data.dh = window.innerHeight;
+        // this.$data.dw = window.innerHeight * 0.5625;
+        // this.$data.dh = window.innerHeight;
       }
-      console.log(browser);
+      console.log(this.$data.dh, this.$data.dw);
     };
     //*****************语聊房监听回调*******************
     //语聊房被静音/取消静音回调
@@ -177,7 +207,9 @@ export default {
               this.$RCVoiceRoomLib._roomidcli
             );
           }
-
+          if (this.$route.name == "liveRoom") {
+            await this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli);
+          }
           // setTimeout(
           //   () => {
           //     location.reload()
@@ -1197,6 +1229,7 @@ export default {
 
     //关闭房间
     this.$RCLiveRoomLib.on("onVoiceRoomClosed", async () => {
+      if (this.$RCLiveRoomLib._roomidcli == "") return;
       await this.$RCLiveRoomLib
         .leaveRoom(this.$RCLiveRoomLib._roomidcli)
         .then(() => {
@@ -1309,6 +1342,7 @@ export default {
     //房间被关闭
     this.$RCLiveRoomLib.on("chatroomDestroyed", () => {
       console.log("chatroomDestroyed mark");
+      if (this.$RCLiveRoomLib._roomidcli == "") return;
       this.$RCLiveRoomLib.leaveRoom(this.$RCLiveRoomLib._roomidcli).then(() => {
         if (
           !this.$store.state.roomInformation.createUser ||
@@ -1365,7 +1399,7 @@ export default {
   color: #2c3e50;
   height: 100%;
   width: 56.25vh;
-  max-width: 375px;
+
   overflow: hidden;
   margin: auto;
   background: #fff;
@@ -1387,19 +1421,20 @@ export default {
 }
 
 .el-drawer__wrapper {
-  /* position: absolute !important; */
-  max-width: 375px !important;
-  left: calc(50vw - 187.5px) !important;
+  position: absolute !important;
+  /* max-width: 375px !important;
+  left: calc(50vw - 187.5px) !important; */
 }
 
 .el-dialog__wrapper {
-  /* position: absolute !important; */
-  max-width: 375px !important;
-  left: calc(50vw - 187.5px) !important;
+  position: absolute !important;
+  /* max-width: 375px !important;
+  left: calc(50vw - 187.5px) !important; */
 }
 
 .v-modal {
-  width: 375px !important;
-  left: calc(50vw - 187.5px) !important;
+  position: absolute;
+  /* width: 375px !important;
+  left: calc(50vw - 187.5px) !important; */
 }
 </style>

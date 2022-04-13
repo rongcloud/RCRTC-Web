@@ -13,21 +13,21 @@
     </div>
     <div class="subtitle">
       <img
-        v-if="delay < 10"
+        v-if="delay < 100"
         class="icon"
         width="8.5px"
         height="6.5px"
         :src="require('../../assets/live/delay-icon-1.png')"
       />
       <img
-        v-if="delay >= 10 && delay < 29"
+        v-if="delay >= 100 && delay < 290"
         class="icon"
         width="8.5px"
         height="6.5px"
         :src="require('../../assets/live/delay-icon-2.png')"
       />
       <img
-        v-if="delay >= 29"
+        v-if="delay >= 290"
         class="icon"
         width="8.5px"
         height="6.5px"

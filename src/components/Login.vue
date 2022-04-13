@@ -46,7 +46,7 @@
       和
       <a class="verificationLink" @click="clickLinksec">《隐私政策》</a>
       并新登录即注册开通融云发者账号
-      <div class="verificationEdition">融云 RTC 1.0.1</div>
+      <div class="verificationEdition">融云 RTC 2.0.0</div>
     </div>
   </div>
 </template>
@@ -89,8 +89,8 @@ export default {
     return {
       // 表单
       loginForm: {
-        phone: "18889896868",
-        verificationCode: "222222", //表单中展示的验证码
+        phone: "",
+        verificationCode: "", //表单中展示的验证码
         contenttext: "", //向手机号发送的随机验证码
         timer: null,
         showloginCode: true, //判断展示‘获取验证码’或‘倒计时’

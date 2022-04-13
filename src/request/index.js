@@ -259,9 +259,10 @@ export default {
         console.log("上传：", obj);
         let data = new FormData();
         data.append("file", obj)
+        
         // Axios.defaults.baseURL = ''
         return Axios
-            .post(baseURL + `/file/upload`, data, {
+            .post(`/file/upload`, data, {
                 headers: {
                     Authorization: store.state.userInfo.authorization,
                     BusinessToken: btoken,

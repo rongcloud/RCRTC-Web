@@ -437,7 +437,7 @@ export default {
   position: absolute;
   top: 0px;
   z-index: 20000;
-  width: 375px;
+  width: 100%;
   height: 100vh;
   min-width: none;
 }

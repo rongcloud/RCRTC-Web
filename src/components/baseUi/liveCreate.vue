@@ -161,7 +161,7 @@ export default {
   top: 0px;
   left: 92px;
   font-size: 14px;
-  color: #858585;
+  color: #fff;
   position: absolute;
   border: #333 1px solid;
   border-radius: 20px;

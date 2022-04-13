@@ -76,6 +76,7 @@ export default {
               await this.$RCLiveRoomLib.leaveRoom(
                 this.$RCLiveRoomLib._roomidcli
               );
+              this.$RCLiveRoomLib._roomidcli = ''
               console.log("living", this.$RCLiveRoomLib._roomidcli);
               this.$router.go(-1);
             } catch (error) {
