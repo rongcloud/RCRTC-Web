@@ -152,6 +152,9 @@ export default {
 <style scoped>
 .popup {
   font-size: 0.16rem;
+  position: relative;
+  max-width: 375px;
+  left: calc(50vw - 187.5px) !important;
 }
 .popup /deep/ .el-dialog__header {
   padding: 0.2rem 0.2rem 0.05rem;

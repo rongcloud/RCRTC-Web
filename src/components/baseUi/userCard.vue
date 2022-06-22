@@ -5,6 +5,7 @@
       :visible="false"
       :direction="direction"
       :show-close="false"
+      class="drawerWrapperControl"
       :close="UserClickSeizeSeatClose"
       :withHeader="false"
       size="2.995rem"
@@ -163,6 +164,11 @@ export default {
 .UserClickSeizeSeat {
   text-align: center;
   overflow: hidden;
+}
+.drawerWrapperControl {
+  position: relative;
+  max-width: 375px;
+  left: calc(50vw - 187.5px) !important;
 }
 
 .UserClickSeizeSeat /deep/ .el-drawer {

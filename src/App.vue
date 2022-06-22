@@ -42,11 +42,22 @@ export default {
 
   created() {
     // window.rc = this.$RCVoiceRoomLib;online
-    this.$RCVoiceRoomLib.init({ AppKey: config.appKey.online });
+    // this.$RCVoiceRoomLib.init({ AppKey: config.appKey.online });
+    this.$RongIMLib.init({
+      appkey: config.appKey.online,
+    });
+    const rtcClient = this.$RongIMLib.installPlugin(
+      this.$RongRTCLib.installer,
+      {}
+    );
+    this.$RCVoiceRoomLib.init({
+      RongIMLib: this.$RongIMLib,
+      RongRTCLib: rtcClient,
+    });
     this.$RCLiveRoomLib.init(config.appKey.online);
     window.rc = this.$RCLiveRoomLib;
-    window.cc = this.$RCVoiceRoomLib;
-    console.log("getua", navigator.userAgent);
+    // window.cc = this.$RCVoiceRoomLib;
+    // console.log("getua", navigator.userAgent);
     // var customUserAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36`;
     // //修改后的userAgent
     // Object.defineProperty(navigator, "userAgent", {
@@ -128,19 +139,21 @@ export default {
       language: (navigator.browserLanguage || navigator.language).toLowerCase(),
     };
 
-    if(browser.versions.mobile){//手机初始化
+    if (browser.versions.mobile) {
+      //手机初始化
       if (screen.height * 0.5625 > screen.width) {
-          this.$data.dw = screen.width;
-        } else {
-          this.$data.dw = screen.height * 0.5625;
-        }
-        this.$data.dh = screen.height;
-    }else{//pc初始化
+        this.$data.dw = screen.width;
+      } else {
+        this.$data.dw = screen.height * 0.5625;
+      }
+      this.$data.dh = screen.height;
+    } else {
+      //pc初始化
       this.$data.dw = 375;
       this.$data.dh = window.innerHeight;
     }
     window.onresize = () => {
-      console.log("resiz");
+      // console.log("resiz");
       var deviceWidth =
         document.documentElement.clientWidth || window.innerWidth;
       if (deviceWidth >= 375) {
@@ -154,13 +167,13 @@ export default {
       if (browser.versions.mobile) {
         //手机端不给重置页面 防止输入法 弹出某些页面会乱
       } else {
-        console.log("pcreseize");
+        // console.log("pcreseize");
         this.$data.dw = 375;
         this.$data.dh = window.innerHeight;
         // this.$data.dw = window.innerHeight * 0.5625;
         // this.$data.dh = window.innerHeight;
       }
-      console.log(this.$data.dh, this.$data.dw);
+      // console.log(this.$data.dh, this.$data.dw);
     };
     //*****************语聊房监听回调*******************
     //语聊房被静音/取消静音回调
@@ -183,7 +196,12 @@ export default {
 
     //语聊房被踢出房间
     this.$RCVoiceRoomLib.on("RCKickUserOutRoomContent", async (parm) => {
-      this.KickUserOut(parm);
+      // this.KickUserOut(parm);
+      this.$store.dispatch("getSeatInfoList");
+      this.$router.go(-1);
+      this.$store.dispatch("showToast", {
+        value: "您已被踢出房间",
+      });
     });
 
     //语聊房各种公屏消息

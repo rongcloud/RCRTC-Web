@@ -80,7 +80,7 @@ export default {
           })
           .then((res) => {
             //   console.log(res);
-            console.log("用户列表",res);
+            console.log("用户列表", res);
             this.userapply = [];
             const userList = res.data.data;
             const seatList = this.$RCLiveRoomLib.seatInfoList;
@@ -97,7 +97,7 @@ export default {
                 this.userapply.push(userObject[arr[l]]);
               }
             }
-            console.log(seatList)
+            console.log(seatList);
             for (let o = 0; o < seatList.length; o += 1) {
               if (seatList[o] && seatList[o]["userId"]) {
                 delete userinvitationObject[seatList[o]["userId"]];
@@ -124,7 +124,7 @@ export default {
           })
           .then((res) => {
             //   console.log(res);
-            console.log("用户列表",res);
+            console.log("用户列表", res);
             this.userapply = [];
             const userList = res.data.data;
             const seatList = this.$RCVoiceRoomLib.seatInfoList;
@@ -193,6 +193,11 @@ export default {
 .ConnetWheat {
   font-size: 0.16rem;
   text-align: center;
+}
+.ConnetWheat-drawer {
+  position: relative;
+  max-width: 375px;
+  left: calc(50vw - 187.5px) !important;
 }
 
 .ConnetWheat-drawer .el-drawer {

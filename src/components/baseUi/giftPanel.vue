@@ -217,7 +217,6 @@ export default {
           };
           this.$RCLiveRoomLib.im.messageUpdate("RC:Chatroom:GiftAll", c); //发im
         } else {
-          
           this.$RCVoiceRoomLib.emit("MessageReceived", {
             //发本地
             //模拟本地消息发送
@@ -439,6 +438,7 @@ export default {
   z-index: 20000;
   width: 100%;
   height: 100vh;
+  max-width: 375px;
   min-width: none;
 }
 .shadow {

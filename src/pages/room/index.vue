@@ -167,7 +167,7 @@ export default {
       roomType: "", //房间类型
       isInRoom: false, //在房间内
       title: "语聊房",
-      antiShake: true //防抖 防止频繁创建房间
+      antiShake: true, //防抖 防止频繁创建房间
     };
   },
   components: {
@@ -189,9 +189,13 @@ export default {
   methods: {
     //创建房间
     creatRoom: function () {
-      console.log("创建房间",1);
-      if(!this.$data.antiShake)return;
+      console.log("创建房间", 1);
+      if (!this.$data.antiShake) return;
       this.$data.antiShake = false;
+      setTimeout(() => {
+        this.$data.antiShake = true;
+      }, 500);
+
       console.log(this.$RCLiveRoomLib.im);
       //增加提前检查麦克风防止上麦失败
       navigator.getUserMedia(
@@ -307,8 +311,7 @@ export default {
     //上传头像图片成功之后
     handleAvatarSuccess(res, file) {
       // console.log(res, file);
-      // this.updateObj.themePictureUrl = `${this.$store.state.defaultAddress}${res.data}`;
-      this.updateObj.themePictureUrl = `https://rcrtc-api.rongcloud.net/file/show?path=${res.data}`;
+      // this.updateObj.themePictureUrl = `https://rcrtc-api.rongcloud.net/file/show?path=${res.data}`;
       this.imgBackground = URL.createObjectURL(file.raw);
     },
 
@@ -389,6 +392,7 @@ export default {
         value: "功能待开放",
       });
     },
+
     //小窗关闭
     miniClose: function (e) {
       console.log("miniclose", e);
@@ -402,11 +406,13 @@ export default {
         this.$data.isInRoom = false;
       }
     },
+
     miniBack: function () {
       console.log("miniback");
       this.$router.push("/live?roomid=" + this.$RCLiveRoomLib._roomidcli);
       // console.log(this.$refs);
     },
+
     //创建并加入房间
     createAndJoinRoom: function () {
       request
@@ -465,7 +471,7 @@ export default {
     }
     console.log(this.$store.state.roomType);
     if (this.$store.state.roomType) {
-      console.log(this.$store.state.roomType);
+      // console.log(this.$store.state.roomType);
       request
         .roomList(reqObj)
         .then((response) => {

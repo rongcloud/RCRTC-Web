@@ -131,7 +131,8 @@ export default {
         this.$store.dispatch("getOwerDisconnet", true).then(() => {
           this.$RCLiveRoomLib.im.body.disconnect().then(() => {
             this.$store.dispatch("getRoomType", "voice");
-            this.$RCVoiceRoomLib.connect(this.$store.state.userInfo.imToken);
+            // this.$RCVoiceRoomLib.connect(this.$store.state.userInfo.imToken);
+            this.$RongIMLib.connect(this.$store.state.userInfo.imToken);
           });
         });
       }

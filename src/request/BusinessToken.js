@@ -1,1 +1,1 @@
-export const btoken = 'vStHYPdrQoImm-7Ur0ks1g'
+export const btoken = ''

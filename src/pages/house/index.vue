@@ -199,6 +199,7 @@ import {
   outset,
 } from "./static.js";
 import request from "../../request/index";
+import LoginVue from "../../components/Login.vue";
 export default {
   name: "House",
   data: function () {
@@ -1037,7 +1038,6 @@ export default {
                 this.talkTop = 64.5;
                 this.talkHeight = 28;
               }
-
               if (
                 res.data.data.createUser.userId !=
                 this.$RCVoiceRoomLib.im.userId
@@ -1235,7 +1235,7 @@ export default {
     });
   },
   mounted() {
-    console.log('mounted::::');
+    console.log("mounted::::");
     if (this.$RCVoiceRoomLib._roomidcli) {
       this.getRoominformation();
     }
